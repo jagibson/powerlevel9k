@@ -612,7 +612,7 @@ prompt_command_execution_time() {
   fi
 
   if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    "$1_prompt_segment" "$0" "$2" "red" "226" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
+    "$1_prompt_segment" "$0" "$2" "black" "teal" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
   fi
 }
 
@@ -784,6 +784,10 @@ prompt_detect_virt() {
   fi
 }
 
+prompt_aws_metadata() {
+  awsmetadata="$(curl -s --max-time 1 -w '\n' "http://169.254.169.254/profile" 2> /dev/null)"
+  [[ $? == 0 ]] && [[ $awsmetadata != "No current profile" ]] && "$1_prompt_segment" "$0" "$2" red white "$awsmetadata" 'AWS_ICON'
+}
 
 prompt_icons_test() {
   for key in ${(@k)icons}; do
